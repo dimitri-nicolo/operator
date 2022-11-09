@@ -79,7 +79,7 @@ type AmazonCredential struct {
 
 func ConvertSecretToCredential(s *corev1.Secret) (*AmazonCredential, error) {
 	if s == nil {
-		return nil, fmt.Errorf("No secret specified")
+		return nil, fmt.Errorf("no secret specified")
 	}
 
 	missingKey := []string{}

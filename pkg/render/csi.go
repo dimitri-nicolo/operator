@@ -90,12 +90,12 @@ func (c *csiComponent) csiDriver() *v1.CSIDriver {
 func (c *csiComponent) csiTolerations() []corev1.Toleration {
 	operator := corev1.TolerationOperator(CSITolerationOperator)
 	tolerations := []corev1.Toleration{
-		corev1.Toleration{
+		{
 			Key:      CSITolerationControlPlaneKey,
 			Operator: operator,
 			Effect:   corev1.TaintEffectNoSchedule,
 		},
-		corev1.Toleration{
+		{
 			Key:      CSITolerationMasterKey,
 			Operator: operator,
 			Effect:   corev1.TaintEffectNoSchedule,
@@ -118,11 +118,11 @@ func (c *csiComponent) csiContainers() []corev1.Container {
 			Privileged: ptr.BoolToPtr(true),
 		},
 		Env: []corev1.EnvVar{
-			corev1.EnvVar{
+			{
 				Name:  "LOG_LEVEL",
 				Value: "warn",
 			},
-			corev1.EnvVar{
+			{
 				Name: "KUBE_NODE_NAME",
 				ValueFrom: &corev1.EnvVarSource{
 					FieldRef: &corev1.ObjectFieldSelector{
@@ -131,19 +131,19 @@ func (c *csiComponent) csiContainers() []corev1.Container {
 			},
 		},
 		VolumeMounts: []corev1.VolumeMount{
-			corev1.VolumeMount{
+			{
 				Name:      "varrun",
 				MountPath: filepath.Clean("/var/run"),
 			},
-			corev1.VolumeMount{
+			{
 				Name:      "etccalico",
 				MountPath: filepath.Clean("/etc/calico"),
 			},
-			corev1.VolumeMount{
+			{
 				Name:      "socket-dir",
 				MountPath: filepath.Clean("/csi"),
 			},
-			corev1.VolumeMount{
+			{
 				Name:             "kubelet-dir",
 				MountPath:        c.cfg.Installation.KubeletVolumePluginPath,
 				MountPropagation: &mountPropagation,
@@ -165,17 +165,17 @@ func (c *csiComponent) csiContainers() []corev1.Container {
 			Privileged: ptr.BoolToPtr(true),
 		},
 		Env: []corev1.EnvVar{
-			corev1.EnvVar{
+			{
 				Name:  "ADDRESS",
 				Value: filepath.Clean("/csi/csi.sock"),
 			},
-			corev1.EnvVar{
+			{
 				Name: "DRIVER_REG_SOCK_PATH",
 				// This path cannot also reference "/csi" because /csi only exists inside of the pod, but this path
 				// is used by the kubelet on the host node to issue CSI operations
 				Value: filepath.Join(c.cfg.Installation.KubeletVolumePluginPath, "plugins/csi.tigera.io/csi.sock"),
 			},
-			corev1.EnvVar{
+			{
 				Name: "KUBE_NODE_NAME",
 				ValueFrom: &corev1.EnvVarSource{
 					FieldRef: &corev1.ObjectFieldSelector{
@@ -185,11 +185,11 @@ func (c *csiComponent) csiContainers() []corev1.Container {
 			},
 		},
 		VolumeMounts: []corev1.VolumeMount{
-			corev1.VolumeMount{
+			{
 				Name:      "socket-dir",
 				MountPath: filepath.Clean("/csi"),
 			},
-			corev1.VolumeMount{
+			{
 				Name:      "registration-dir",
 				MountPath: filepath.Clean("/registration"),
 			},
@@ -206,7 +206,7 @@ func (c *csiComponent) csiVolumes() []corev1.Volume {
 	hostPathTypeDir := corev1.HostPathDirectory
 	hostPathTypeDirOrCreate := corev1.HostPathDirectoryOrCreate
 	return []corev1.Volume{
-		corev1.Volume{
+		{
 			Name: "varrun",
 			VolumeSource: corev1.VolumeSource{
 				HostPath: &corev1.HostPathVolumeSource{
@@ -214,7 +214,7 @@ func (c *csiComponent) csiVolumes() []corev1.Volume {
 				},
 			},
 		},
-		corev1.Volume{
+		{
 			Name: "etccalico",
 			VolumeSource: corev1.VolumeSource{
 				HostPath: &corev1.HostPathVolumeSource{
@@ -222,7 +222,7 @@ func (c *csiComponent) csiVolumes() []corev1.Volume {
 				},
 			},
 		},
-		corev1.Volume{
+		{
 			Name: "kubelet-dir",
 			VolumeSource: corev1.VolumeSource{
 				HostPath: &corev1.HostPathVolumeSource{
@@ -231,7 +231,7 @@ func (c *csiComponent) csiVolumes() []corev1.Volume {
 				},
 			},
 		},
-		corev1.Volume{
+		{
 			Name: "socket-dir",
 			VolumeSource: corev1.VolumeSource{
 				HostPath: &corev1.HostPathVolumeSource{
@@ -240,7 +240,7 @@ func (c *csiComponent) csiVolumes() []corev1.Volume {
 				},
 			},
 		},
-		corev1.Volume{
+		{
 			Name: "registration-dir",
 			VolumeSource: corev1.VolumeSource{
 				HostPath: &corev1.HostPathVolumeSource{
